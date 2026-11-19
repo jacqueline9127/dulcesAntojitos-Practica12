@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dulces Antojitos — Repostería Artesanal</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="navbar">
+    <a href="#inicio" class="brand">
+      <span class="brand-badge">🍰</span>
+      <div>
+        <strong>Dulces Antojitos</strong>
+        <small>Repostería & Masitas</small>
+      </div>
+    </a>
+
+    <nav id="nav-tienda" class="nav-links">
+      <a href="#inicio">Inicio</a>
+      <a href="#catalogo-section">Catálogo</a>
+      <select id="filtro-categoria" aria-label="Filtrar por categoría">
+        <option value="todas">Todas las categorías</option>
+      </select>
+      <button id="btn-abrir-login" class="btn btn-outline">Admin</button>
+    </nav>
+
+    <div id="nav-admin" class="nav-links hidden">
+      <span class="admin-tag">Modo Administrador</span>
+      <button id="btn-ver-tienda" class="btn btn-outline">Ver tienda</button>
+      <button id="btn-cerrar-sesion" class="btn btn-danger">Cerrar sesión</button>
+    </div>
+  </header>
+
+  <p id="estado-msg" class="estado-msg"></p>
+
+  <!-- VISTA PÚBLICA: INICIO + CATÁLOGO -->
+  <div id="vista-tienda">
+    <section id="inicio" class="hero">
+      <div class="hero-content">
+        <span class="hero-pill">Horneado con cariño cada día</span>
+        <h1>Endulza tus momentos con <span>Dulces Antojitos</span></h1>
+        <p>
+          Tortas húmedas, masitas recién salidas del horno, alfajores, donas y tartas
+          preparadas con ingredientes frescos para compartir o darte un gusto.
+        </p>
+        <div class="hero-actions">
+          <a href="#catalogo-section" class="btn btn-primary">Explorar catálogo</a>
+        </div>
+        <div class="hero-highlights">
+          <div class="mini-feature">
+            <strong>Tortas & Tartas</strong>
+            <span>Porciones y enteras</span>
+          </div>
+          <div class="mini-feature">
+            <strong>Masitas</strong>
+            <span>Ideales para la tarde</span>
+          </div>
+          <div class="mini-feature">
+            <strong>Stock en vivo</strong>
+            <span>Actualizado al instante</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <main id="catalogo-section" class="container">
+      <div class="section-header">
+        <div>
+          <span class="eyebrow">Nuestro menú</span>
+          <h2>Catálogo de Postres</h2>
+        </div>
+      </div>
+
+      <section id="catalogo" class="grid"></section>
+    </main>
+
+    <footer class="footer">
+      <p><strong>Dulces Antojitos</strong> — Repostería artesanal · Práctica #12</p>
+    </footer>
+  </div>
+
+  <!-- VISTA EXCLUSIVA DE ADMINISTRACIÓN -->
+  <main id="panel-admin" class="container admin-view hidden">
+    <div class="admin-header">
+      <div>
+        <span class="eyebrow">Gestión interna</span>
+        <h2>Panel de Administración — Dulces Antojitos</h2>
+      </div>
+    </div>
+
+    <section class="stats-grid">
+      <div class="stat-card">
+        <span>Productos registrados</span>
+        <strong id="stat-total-prods">0</strong>
+      </div>
+      <div class="stat-card">
+        <span>Unidades en stock</span>
+        <strong id="stat-total-stock">0</strong>
+      </div>
+      <div class="stat-card">
+        <span>Postres agotados</span>
+        <strong id="stat-agotados">0</strong>
+      </div>
+    </section>
+
+    <div class="admin-grid">
+      <form id="form-producto" class="card form-card">
+        <h3>Agregar / Editar Producto</h3>
+        <input type="hidden" id="prod-id" />
+
+        <label for="prod-nombre">Nombre del postre</label>
+        <input type="text" id="prod-nombre" placeholder="Ej. Torta de Chocolate" required />
+
+        <div class="form-row-2">
+          <div>
+            <label for="prod-precio">Precio</label>
+            <input type="number" id="prod-precio" min="0" step="0.01" required />
+          </div>
+          <div>
+            <label for="prod-stock">Stock</label>
+            <input type="number" id="prod-stock" min="0" required />
+          </div>
+        </div>
+
+        <label for="prod-categoria">Categoría</label>
+        <input type="text" id="prod-categoria" placeholder="Ej. Tortas, Masitas, Tartas" required />
+
+        <label for="prod-imagen">URL de imagen (opcional)</label>
+        <input type="url" id="prod-imagen" placeholder="https://..." />
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Guardar producto</button>
+          <button type="button" id="btn-cancelar-edicion" class="btn btn-secondary">Limpiar</button>
+        </div>
+      </form>
+
+      <form id="form-categoria" class="card form-card">
+        <h3>Categorías (Opcional)</h3>
+        <label for="cat-nombre">Nombre de nueva categoría</label>
+        <input type="text" id="cat-nombre" placeholder="Ej. Cupcakes" required />
+        <button type="submit" class="btn btn-primary">Crear categoría</button>
+        <ul id="lista-categorias" class="lista-simple"></ul>
+      </form>
+    </div>
+
+    <section class="card admin-table-card">
+      <h3>Inventario de Productos</h3>
+      <div id="admin-items"></div>
+    </section>
+  </main>
+
+  <!-- MODAL LOGIN ADMIN -->
+  <div id="modal-login" class="modal hidden">
+    <div class="modal-content">
+      <h3>Acceso Administrador</h3>
+      <p class="modal-subtitle">Ingresa tus credenciales para gestionar Dulces Antojitos.</p>
+      <form id="form-login">
+        <label for="login-usuario">Usuario</label>
+        <input type="text" id="login-usuario" required />
+
+        <label for="login-password">Contraseña</label>
+        <input type="password" id="login-password" required />
+
+        <p id="login-error" class="error-text"></p>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Entrar</button>
+          <button type="button" id="btn-cerrar-login" class="btn btn-secondary">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
